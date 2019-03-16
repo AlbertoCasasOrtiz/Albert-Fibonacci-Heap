@@ -3,15 +3,22 @@ package fibonacciHeap;
 import java.util.ArrayList;
 
 import array.Array;
-import node.Node;
+import fibonacciHeap.node.Node;
 
+/**
+ * Implementation of a Fibonacci Heap.
+ * @param <T> Type of data to insert. Must be a children of the class Comparable.
+ */
 public class FibonacciHeap<T extends Comparable<T>> {
+	/** Min element in the heap. */
 	private Node<T> min;
+	/** Number of nodes in the heap. */
 	private int numNodes;
+	/** Number of nodes in the root of the heap. */
 	private int nodesInRoot;
 	
 	/*
-	 * Constructor for the class FibonacciHeap.
+	 * Constructor of class FibonacciHeap.
 	 * Creates an empty heap.
 	 */
 	public FibonacciHeap(){ 
@@ -20,19 +27,15 @@ public class FibonacciHeap<T extends Comparable<T>> {
 		this.nodesInRoot = 0;
 	}
 	
-	
-	//Getters
-	
 	/*
-	 * Gets the number of nodes in the heap.
+	 * Get the number of nodes in the heap.
 	 */
 	public int getNumNodes(){
 		return this.numNodes;
 	}
 	
 	/*
-	 * Gets the min element in the heap.
-	 * It does not remove the element.
+	 * Get the min element in the heap. This function do not remove the node.
 	 * Null if the heap is empty.
 	 */
 	public Node<T> getMin(){
@@ -40,25 +43,22 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}
 	
 	/*
-	 * Gets the number of nodes in the root list.
+	 * Get the number of nodes in the root.
 	 */
 	public int getNodesInRoot(){
 		return this.nodesInRoot;
 	}
-	
-	
-	//Methods for FibonacciHeap
-	
+
 	/*
-	 * Inserts an element in the heap.
+	 * Insert an element in the heap.
 	 */
 	public void insert(T elem){
 		if(elem != null){
-			//Inicializate the node to insert.
+			//Initialize the node to insert.
 			Node<T> inserted = new Node<T>(elem);
 			inserted.setDegree(0);
 			inserted.setParent(null);
-			inserted.insertSon(null);
+			inserted.insertChild(null);
 			inserted.setMark(false);
 			//If the heap is empty, insert the node as the minimum.
 			if(this.min == null){
@@ -80,21 +80,21 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}	
 	
 	/*
-	 * Gets the minimum element of the heap and removes it.
+	 * Get the minimum element of the heap and removes it.
 	 * Null if it is empty.
 	 */
 	public Node<T> extractMin(){
 		//Check if the heap is empty.
 		if(this.min != null){
 			Node<T> extracted = this.min;
-			Node<T> son = extracted.getFirstSon();
+			Node<T> son = extracted.getFirstChild();
 			//Insert the sons of the node to extract in the roots list.
-			for(int i = 0; i < extracted.getNumSons(); i++){
+			for(int i = 0; i < extracted.getNumChildren(); i++){
 				Node<T> rightSon = son.getRightBrother();
 				this.insertInRoot(son);
 				son = rightSon;
 			}
-			//If the node is the unic node in the heap the heap is empty,
+			//If the node is the only node in the heap the heap is empty,
 			if(extracted == extracted.getRightBrother())
 				this.min = null;
 			//else... assign any node as the min.
@@ -114,10 +114,10 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}
 	
 	/*
-	 * Method which decreases an element in the Heap.
+	 * Decrease an element in the Heap.
 	 */
 	public void decreaseElement(Node<T> decrease, T k){
-		//Decrease only if the node is greather than the new value.
+		//Decrease only if the node is greater than the new value.
 		if(k.compareTo(decrease.getElem()) < 0){
 			decrease.setElem(k);
 			Node<T> parent = decrease.getParent();
@@ -137,7 +137,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	 * Returns true if a element exists in the heap.
 	 */
 	public boolean existNode(T elem){
-		return findNode(elem).isEmpty() ? false: true;
+		return !findNode(elem).isEmpty();
 	}
 	
 	/*
@@ -149,10 +149,10 @@ public class FibonacciHeap<T extends Comparable<T>> {
 		for(int i = 0; i < this.nodesInRoot; i++){
 			if(current.getElem().compareTo(elem) == 0){
 				result.add(current);
-				if (current.getNumSons() != 0)
-				result = findNode(current.getFirstSon(), elem, result);
-			}else if (current.getNumSons() != 0){
-				result = findNode(current.getFirstSon(), elem, result);
+				if (current.getNumChildren() != 0)
+				result = findNode(current.getFirstChild(), elem, result);
+			}else if (current.getNumChildren() != 0){
+				result = findNode(current.getFirstChild(), elem, result);
 			}
 			current = current.getRightBrother();
 		}
@@ -164,7 +164,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	 * The result will be in the heap which calls the function.
 	 */
 	public void union(FibonacciHeap<T> fib2){
-		if(this != null && fib2 != null){
+		if(fib2 != null){
 			if(this.getMin() == null && fib2.getMin() != null){
 				this.min = fib2.getMin();
 				this.numNodes += fib2.numNodes;
@@ -183,12 +183,10 @@ public class FibonacciHeap<T extends Comparable<T>> {
 		
 		}
 	}
-	
-	//Auxiliar methods
-	
+
 	/*
-	 * Auxiliar method which onsolidates the heap.
-	 * Sets a tree as a consolidate tree, which have at least 
+	 * Aux method which consolidates the heap.
+	 * Set a tree as a consolidate tree, which have at least
 	 * one node for each degree.
 	 */
 	private void consolidate(){
@@ -218,7 +216,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
 				arr.insert(d, null);
 				d++;
 			}
-			//Insert the node in the degree list.
+			//Insert the.node in the degree list.
 			arr.insert(d, x);
 			//We may change x when we link nodes. Set x as the next original value.
 			x = z;
@@ -236,17 +234,17 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}
 	
 	/*
-	 * Auxiliar method which sets a node from the root lists as son 
+	 * Set a node from the root lists as son
 	 * of another node of the root list.
 	 */
 	private void link(Node<T> y, Node<T> x){
 		this.deleteFromRoot(y);
-		x.insertSon(y);
+		x.insertChild(y);
 		y.setMark(false);
 	}
 	
 	/*
-	 * Auxiliar method which extract a node from the sons lists of
+	 * Extract a node from the sons lists of
 	 * another node and inserts it in the root list.
 	 */
 	private void cut(Node<T> decreased, Node<T> parent){
@@ -264,7 +262,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
 		//If the node as a parent...
 		if(z != null){
 			//If is not marked, mark it.
-			if(y.isMark() == false)
+			if(!y.isMark())
 				y.setMark(true);
 			//If is marked, cut and cascading cut.
 			else{
@@ -275,7 +273,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}
 	
 	/*
-	 * Auxiliar method which inserts a node into the
+	 * Inserts a node into the
 	 * root list.
 	 */
 	private void insertInRoot(Node<T> inserted){
@@ -290,7 +288,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}	
 	
 	/*
-	 * Auxiliar method which deletes a node from the
+	 * Deletes a node from the
 	 * root list.
 	 */
 	private void deleteFromRoot(Node<T> deleted){
@@ -302,14 +300,14 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}
 
 	/*
-	 * Auxiliar method which updates the degree of a node that has lost
+	 * Update the degree of a node that has lost
 	 * a son.
 	 */
 	private int updateSon(Node<T> parent){
-		if(parent.getNumSons()!= 0){
+		if(parent.getNumChildren()!= 0){
 			int grade = 0;
-			Node<T> son = parent.getFirstSon();
-			for(int i = 0; i < parent.getNumSons(); i++){
+			Node<T> son = parent.getFirstChild();
+			for(int i = 0; i < parent.getNumChildren(); i++){
 				if(son.getDegree() > grade)
 					grade = son.getDegree();
 				son = son.getLeftBrother();
@@ -319,42 +317,45 @@ public class FibonacciHeap<T extends Comparable<T>> {
 	}
 	
 	/*
-	 * Auxiliar method which deletes a node from the sons lists of it
+	 * Delete a node from the sons lists of it
 	 * parent.
 	 */
 	private void deleteFromSons(Node<T> son){
 		Node<T> parent = son.getParent();
 		if(son.getLeftBrother() == son){
 			parent.setDegree(0);
-			parent.insertSon(null);
+			parent.insertChild(null);
 		}else{
-			if(parent.getFirstSon() == son)
-				parent.setFirstSon(son.getLeftBrother());
+			if(parent.getFirstChild() == son)
+				parent.setFirstChild(son.getLeftBrother());
 			Node<T> leftBrother = son.getLeftBrother();
 			Node<T> rightBrother = son.getRightBrother();
 			leftBrother.setRightBrother(rightBrother);
 			rightBrother.setLeftBrother(leftBrother);
 		}
-		parent.setNumSons(parent.getNumSons()-1);
+		parent.setNumChildren(parent.getNumChildren()-1);
 		parent.setDegree(this.updateSon(parent));
 		son.setParent(null);
 	}
 	
 	/*
-	 * Auxiliar recursive method which finds an elements in the descendents
+	 * Recursive method which finds an elements in the descendents
 	 * of a node.
 	 */
 	private ArrayList<Node<T>> findNode(Node<T> current, T elem, ArrayList<Node<T>> result){
-		for(int i = 0; i < current.getParent().getNumSons(); i++){
+		for(int i = 0; i < current.getParent().getNumChildren(); i++){
 			if(current.getElem() == elem){
 				result.add(current);
-				if (current.getNumSons() != 0)
-				result = findNode(current.getFirstSon(), elem, result);
-			}else if (current.getNumSons() != 0){
-				result = findNode(current.getFirstSon(), elem, result);
+				if (current.getNumChildren() != 0)
+				result = findNode(current.getFirstChild(), elem, result);
+			}else if (current.getNumChildren() != 0){
+				result = findNode(current.getFirstChild(), elem, result);
 			}
 			current = current.getRightBrother();
 		}
 		return result;
+
+
 	}
+
 }

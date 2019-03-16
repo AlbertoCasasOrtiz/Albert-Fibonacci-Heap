@@ -1,23 +1,26 @@
 package array;
 
+/**
+ * Implementation of a resizable Array.
+ * @param <T> Type of the elements in the array.
+ */
 public class Array<T> {
+	/** Size of the array.*/
 	int size;
+	/** Elements in the array. */
 	Object elem[];
 	
 	/*
 	 * Constructor for the class Array.
-	 * Crates an empty array.
+	 * Creates an empty array.
 	 */
 	public Array(){
 		this.size = 2;
 		this.elem = new Object[size];
 	}
-	
-	
-	//Getters
-	
+
 	/*
-	 * Gets the element in the position index of the array.
+	 * Get the element in the position index of the array.
 	 */
 	@SuppressWarnings("unchecked")
 	public T get(int index){
@@ -27,17 +30,14 @@ public class Array<T> {
 	}
 	
 	/*
-	 * Gets the total size of the array.
+	 * Get size of the array.
 	 */
 	public int getSize(){
 		return this.size;
 	}
-	
-	
-	//Methods of the array.
-	
+
 	/*
-	 * Inserts an element in the array in the position of index.
+	 * Inserts an element in the array in index position.
 	 */
 	public void insert(int index, T elem){
 		if(index < this.size)
@@ -50,22 +50,19 @@ public class Array<T> {
 	}
 	
 	/*
-	 * Deletes an element of the array.
+	 * Delete an element of the array.
 	 */
 	public void delete(int index){
 		if(index < this.size){
 			this.elem[index] = null;
 		}
 	}
-	
-	
-	//Auxiliar methods
-	
+
 	/*
 	 * Private element which resizes the array if it is full.
 	 */
 	private void resize(){
-		Object elemNew[] = new Object[this.size*2];
+		Object[] elemNew = new Object[this.size * 2];
 		for(int i = 0; i < this.size; i++)
 			elemNew[i] = this.elem[i];
 		this.size *= 2;
