@@ -1,0 +1,78 @@
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+code/.idea/**/workspace.xml
+code/.idea/**/tasks.xml
+code/.idea/**/usage.statistics.xml
+code/.idea/**/dictionaries
+code/.idea/**/shelf
+
+# Generated files
+code/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+code/.idea/**/dataSources/
+code/.idea/**/dataSources.ids
+code/.idea/**/dataSources.local.xml
+code/.idea/**/sqlDataSources.xml
+code/.idea/**/dynamic.xml
+code/.idea/**/uiDesigner.xml
+code/.idea/**/dbnavigator.xml
+
+# Gradle
+code/.idea/**/gradle.xml
+code/.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# code/.idea/modules.xml
+# code/.idea/*.iml
+# code/.idea/modules
+
+# CMake
+code/cmake-build-*/
+
+# Mongo Explorer plugin
+code/.idea/**/mongoSettings.xml
+
+# File-based project format
+*code/.iws
+
+# IntelliJ
+code/out/
+
+# mpeltonen/sbt-idea plugin
+code/.idea_modules/
+
+# JIRA plugin
+code/atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+code/.idea/replstate.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+code/com_crashlytics_export_strings.xml
+code/crashlytics.properties
+code/crashlytics-build.properties
+code/fabric.properties
+
+# Editor-based Rest Client
+code/.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+code/.idea/caches/build_file_checksums.ser
+
+# Maven
+code/target/
+code/pom.xml.tag
+code/pom.xml.releaseBackup
+code/pom.xml.versionsBackup
+code/pom.xml.next
+code/release.properties
+code/dependency-reduced-pom.xml
+code/buildNumber.properties
+code/.mvn/timing.properties
+code/.mvn/wrapper/maven-wrapper.jar
